@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 
-DATABASE_URI = os.getenv('DATABASE_URI')
+DATABASE_URI = os.getenv('DATABASE_URL')
 db = SQLAlchemy()
 
 
