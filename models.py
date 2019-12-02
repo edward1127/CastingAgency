@@ -12,6 +12,7 @@ def setup_db(app, database_path=DATABASE_URI):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+    
    
 
 
