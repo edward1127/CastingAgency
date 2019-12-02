@@ -80,9 +80,9 @@ def create_app(test_config=None):
     @requires_auth(permission='add:actors')
     def post_actors():
 
-        name = request.json.get('name', None)
-        age = request.json.get('age', None)
-        gender = request.json.get('gender', None)
+        name = request.json.get("name", None)
+        age = request.json.get("age", None)
+        gender = request.json.get("gender", None)
 
         if name is None:
             abort(422)
@@ -91,18 +91,18 @@ def create_app(test_config=None):
         new_actor.insert()
 
         return jsonify({
-            'success': True,
+            "success": True,
             "status_code": 200,
-            "status_message": 'OK',
-            'actor': new_actor.attributes()
+            "status_message": "OK",
+            "actor": new_actor.attributes()
         })
 
     @app.route('/movies', methods=['POST'])
     @requires_auth(permission='add:movies')
     def post_movies():
 
-        title = request.json.get('title', None)
-        release_date = request.json.get('release_date', None)
+        title = request.json.get("title", None)
+        release_date = request.json.get("release_date", None)
 
         if title is None:
             abort(422)
@@ -111,18 +111,18 @@ def create_app(test_config=None):
         new_movie.insert()
 
         return jsonify({
-            'success': True,
+            "success": True,
             "status_code": 200,
             "status_message": 'OK',
-            'movie': new_movie.attributes()
+            "movie": new_movie.attributes()
         })
 
     @app.route('/actors/<int:id>', methods=['PATCH'])
     @requires_auth(permission='edit:actors')
     def patch_actors(id):
-        name = request.json.get('name', None)
-        age = title = request.json.get('age', None)
-        gender = title = request.json.get('gender', None)
+        name = request.json.get("name", None)
+        age = title = request.json.get("age", None)
+        gender = title = request.json.get("gender", None)
         target_actor = Actor.query.filter(Actor.id == id).one_or_none()
         if target_actor is None:
             abort(404)
@@ -135,17 +135,17 @@ def create_app(test_config=None):
         target_actor.update()
 
         return jsonify({
-            'success': True,
+            "success": True,
             "status_code": 200,
             "status_message": 'OK',
-            'actor': target_actor.attributes()
+            "actor": target_actor.attributes()
         })
 
     @app.route('/movies/<int:id>', methods=['PATCH'])
     @requires_auth(permission='edit:movies')
     def patch_movies(id):
-        title = request.json.get('title', None)
-        release_date = request.json.get('release_date', None)
+        title = request.json.get("title", None)
+        release_date = request.json.get("release_date", None)
         target_movie = Movie.query.filter(Movie.id == id).one_or_none()
 
         if target_movie is None:
@@ -159,10 +159,10 @@ def create_app(test_config=None):
         target_movie.update()
 
         return jsonify({
-            'success': True,
+            "success": True,
             "status_code": 200,
             "status_message": 'OK',
-            'movie': target_movie.attributes()
+            "movie": target_movie.attributes()
         })
 
     # Error Handling
@@ -190,8 +190,8 @@ def create_app(test_config=None):
     return app
 
 
-APP = create_app()
+app = create_app()
 
 
 if __name__ == '__main__':
-    APP.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)

@@ -1,17 +1,18 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 
-database_path = 'postgresql://postgres:postgres@localhost:5432/castingagency'
+DATABASE_URI = os.getenv('DATABASE_URI')
 db = SQLAlchemy()
 
 
-def setup_db(app, database_path=database_path):
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+def setup_db(app, database_path=DATABASE_URI):
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    db.create_all()
+   
 
 
 # Helper table

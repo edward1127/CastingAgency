@@ -10,24 +10,25 @@ from models import setup_db, Actor, Movie, movies
 
 # login https://cheermoon.auth0.com/authorize?audience=castingagency&response_type=token&client_id=0AclWPWFwUn1rZ0uq22UKyol5CV01GSN&redirect_uri=http://localhost:8100/
 
+TEST_DATABASE_URI = os.getenv('TEST_DATABASE_URI')
+
+
 class CastingAgencyTestCase(unittest.TestCase):
 
     def setUp(self):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_name = "castingagency"
-        self.database_path = "postgresql://{}:{}@{}/{}".format(
-            'postgres', 'postgres', 'localhost:5432', self.database_name)
-        self.casting_assistant = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJUVkJOREV5T0RNMk1USXlNRE0wT1VJd1JFUXlOakF3TmpVd01qWTBRalF6UTBORE0wVkJPUSJ9.eyJpc3MiOiJodHRwczovL2NoZWVybW9vbi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWRjZDFmNTg3M2JhMzYwZWQzYTZiMGVhIiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTU3NTE4NjcxNCwiZXhwIjoxNTc1MjU4NzE0LCJhenAiOiIwQWNsV1BXRndVbjFyWjB1cTIyVUt5b2w1Q1YwMUdTTiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsidmlldzphY3RvcnMiLCJ2aWV3Om1vdmllcyJdfQ.XKYjc0caU5Agpn-X3Pp2gralFv5xRFU6KS12e5fSDbsJv5cNuWF4yNugm22dmUxDl4H-nnbCw3GpXKtm9_pmxzP05HwgIwGlyipn1oOnty42MDcifur6RJtSq6hvByF9s5pRyI3e1lI3CqxUlhTfCHKWYDkEKggSrW9Qnd2Od2G6jaWw4KR5AkdD7ABY8MEsTLo_qyqe4aqX_zhFHLK16GPNRv0AB9LtCaIA7qzfRpwCPG-gggkUMHjVwiUk84Ws8SOL2tKCP_lUiNyHma9ajxVihJLaIajhVk97a2op7W_ELOazbhGBcZVl9QheUamBYaG-X_eo4wAk7zL6lVQ5Vg'
-        self.casting_director = ''
-        self.executive_producer = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJUVkJOREV5T0RNMk1USXlNRE0wT1VJd1JFUXlOakF3TmpVd01qWTBRalF6UTBORE0wVkJPUSJ9.eyJpc3MiOiJodHRwczovL2NoZWVybW9vbi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWRlMjAyNDY2OGJhZTEwZDJhN2MwNDVlIiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTU3NTE4Njc4MCwiZXhwIjoxNTc1MjU4NzgwLCJhenAiOiIwQWNsV1BXRndVbjFyWjB1cTIyVUt5b2w1Q1YwMUdTTiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiYWRkOmFjdG9ycyIsImFkZDptb3ZpZXMiLCJkZWxldGU6YWN0b3JzIiwiZGVsZXRlOm1vdmllcyIsImVkaXQ6YWN0b3JzIiwiZWRpdDptb3ZpZXMiLCJ2aWV3OmFjdG9ycyIsInZpZXc6bW92aWVzIl19.iUzlzpaQNlE2OvJeEqgOuRaqgSTbeAkSJ0NoOaSe7yL7Gd9cQNPXf0AhCZk3siO-3btrH5B09ZmXSWWPmO4ND0H2gRAO_kmJ_2RJRxlLqLc9v72ojVsT71SZ-IGvYj9kEtaP42OgNQCFm8bt5XjUp-0cfrd9lgKfWqLciqi6eZTs_BtlpRjbXGBFCtam3rD1Oq6R_T_d0ye7Dzm_Z2gK_IVhllTJ2Xb_jVeDZpgcfExH27H6TwN_30UWjx0S9X75929XooWKVRqPyUQOiYbnCbHIujFFrVzTRNuTYimdhcUGe2HIIJS3e2bCLPwSnWakbinfR_rurIQ_Oek7aJvS9g'
-        setup_db(self.app, self.database_path)
-
-        # binds the app to the current context
+        self.casting_assistant = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJUVkJOREV5T0RNMk1USXlNRE0wT1VJd1JFUXlOakF3TmpVd01qWTBRalF6UTBORE0wVkJPUSJ9.eyJpc3MiOiJodHRwczovL2NoZWVybW9vbi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWRjZDFmNTg3M2JhMzYwZWQzYTZiMGVhIiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTU3NTI2MDgwOCwiZXhwIjoxNTc1MzMyODA4LCJhenAiOiIwQWNsV1BXRndVbjFyWjB1cTIyVUt5b2w1Q1YwMUdTTiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsidmlldzphY3RvcnMiLCJ2aWV3Om1vdmllcyJdfQ.f8OfeZ3uvBas-X6cpZsn2zo7bFboSyFIBTJDxP1vegnw7gDa0wbRtb_AZPxGl2LTDdY-U3SX0gT3hYfZySdOYvhpYlxp-HqGOsJ7Ra3ZhidpC-9_lm_QKJyKna3vJ6GheHP2UKoqq6cyDC7h1ju3OTAGxMVIgPE960Gl9OQ9r0EgVQ35k82qi1qEQplM24wwWX7eFOLpAsmxeLCBohzrfHs3C1ImdujCZJaVpllEbnWyIZ4hp4s_fIhrnUcElfJmjumCRGhFy4KLNTRlZk9TuhKZfq2X8Zeruhx1ZerVabeSvv4GTNpY4ywyyzkPH13GkdGxBzi3Ru0U8HWV7BU5sg'
+        self.casting_director = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJUVkJOREV5T0RNMk1USXlNRE0wT1VJd1JFUXlOakF3TmpVd01qWTBRalF6UTBORE0wVkJPUSJ9.eyJpc3MiOiJodHRwczovL2NoZWVybW9vbi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWRkMDkxNmFiZmIyOGMwZWNiYTVkNDljIiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTU3NTI0MzQ5MSwiZXhwIjoxNTc1MzE1NDkxLCJhenAiOiIwQWNsV1BXRndVbjFyWjB1cTIyVUt5b2w1Q1YwMUdTTiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiYWRkOmFjdG9ycyIsImRlbGV0ZTphY3RvcnMiLCJlZGl0OmFjdG9ycyIsImVkaXQ6bW92aWVzIiwidmlldzphY3RvcnMiLCJ2aWV3Om1vdmllcyJdfQ.efQZegjY_DL_HZ3dh-aBfolUMB6HhdwcosX21V0Uhy9T73DbLt8EIPEJtIKsKygZ5u1bxVDGRI2WZmwMGbn1eOs2otgImRA6bZA7kjoeNAcGiElsKecu6BXfUNEuT4hkMy--XYF-fKFRaO0LD5riIiZNV2NPgvqqHmfb3EKqA6lyfqAzus9gbRyTkS3jfor_06SlIZx87wTwM9sZbMc51p0uo3Tja04xgTPZxQi8gY2GkNb_nWX2mqtD8sv-RilnMkBH31oxrHmVw9oTh0hHmwnDbhGpcrOxAj54gtX2RJo7s6CInk-Rokleg7_QAgyak45dCrBEpmBDJwfcK4agdA'
+        self.executive_producer = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJUVkJOREV5T0RNMk1USXlNRE0wT1VJd1JFUXlOakF3TmpVd01qWTBRalF6UTBORE0wVkJPUSJ9.eyJpc3MiOiJodHRwczovL2NoZWVybW9vbi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWRlMjAyNDY2OGJhZTEwZDJhN2MwNDVlIiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTU3NTI2MDg4OSwiZXhwIjoxNTc1MzMyODg5LCJhenAiOiIwQWNsV1BXRndVbjFyWjB1cTIyVUt5b2w1Q1YwMUdTTiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiYWRkOmFjdG9ycyIsImFkZDptb3ZpZXMiLCJkZWxldGU6YWN0b3JzIiwiZGVsZXRlOm1vdmllcyIsImVkaXQ6YWN0b3JzIiwiZWRpdDptb3ZpZXMiLCJ2aWV3OmFjdG9ycyIsInZpZXc6bW92aWVzIl19.xbj7v8yMgZwco2jtsvn3J7lRJjAsiwCyrSRdRdcRuUEJXq9yExL1sd5DSrr8eCAGuOZXmM8QJJvrdPEcnMMXPMe519OqypCBHhiYKva8erihK2dhqLaPzSU5OrDA9i8vfcI0uIUlTGrrTlYDyxo7q1VHSJUk0-oIrggOHCymqcno39hSoZtZXGSiC7SlTUNwdETerYXVWqm9Rzp9Xq3jkTpDXlyjyeLzvhh4BeGLwhN0vSpQwtCUcNU9UNnqadjbU64XptuLk9NZEn9vabyZmMertqMxo2hRd6CDtfRRgIfN3k3wdLQx8cDh8P2qag8osfeI3QCukk0QCLXNIx5I_w'
+        setup_db(self.app, TEST_DATABASE_URI)
         with self.app.app_context():
             self.db = SQLAlchemy()
             self.db.init_app(self.app)
+            # create all tables
+            self.db.create_all()
+
 
     def test_post_actors_by_executive_producer_with_auth(self):
         response = self.client().post('/actors',
@@ -53,14 +54,12 @@ class CastingAgencyTestCase(unittest.TestCase):
                                       json={
                                           "name": "Edward",
                                           "gender": "male",
-                                          "age": 25,
+                                          "age": 25
                                       })
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
         self.assertEqual(data['code'], 'unauthorized')
-        
-        
 
     def test_post_movies_by_executive_producer_with_auth(self):
         response = self.client().post('/movies',
@@ -78,7 +77,6 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['status_message'], 'OK')
 
-
     def test_post_movies_by_casting_assistant_without_auth(self):
         response = self.client().post('/movies',
                                       headers={
@@ -90,11 +88,9 @@ class CastingAgencyTestCase(unittest.TestCase):
                                       })
 
         data = json.loads(response.data)
-        
+
         self.assertEqual(response.status_code, 401)
         self.assertEqual(data['code'], 'unauthorized')
-
-
 
     def test_get_actors_by_casting_assistant_with_auth(self):
         response = self.client().get('/actors',
@@ -114,9 +110,6 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(data['code'], 'authorization_header_missing')
 
-
-
-
     def test_get_movies_by_casting_assistant_with_auth(self):
         response = self.client().get('/movies',
                                      headers={
@@ -135,12 +128,11 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(data['code'], 'authorization_header_missing')
 
-
-    def test_patch_actors_by_executive_producer_200(self):
-        random_id = random.choice([ actor.id for actor in Actor.query.all()])
+    def test_patch_actors_by_casting_director_200(self):
+        random_id = random.choice([actor.id for actor in Actor.query.all()])
         response = self.client().patch('/actors/{}'.format(random_id),
                                        headers={
-            "Authorization": "Bearer {}".format(self.executive_producer)
+            "Authorization": "Bearer {}".format(self.casting_director)
         },
             json={
             "name": "David",
@@ -153,11 +145,11 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['status_message'], 'OK')
 
-    def test_patch_actors_by_executive_producer_404(self):
+    def test_patch_actors_by_casting_director_404(self):
         id = 999
         response = self.client().patch('/actors/{}'.format(id),
                                        headers={
-            "Authorization": "Bearer {}".format(self.executive_producer)
+            "Authorization": "Bearer {}".format(self.casting_director)
         },
             json={
             "name": "David",
@@ -170,12 +162,11 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(data['status_message'], "resource Not found")
 
-
-    def test_patch_movies_by_executive_producer_200(self):
+    def test_patch_movies_by_casting_director_200(self):
         random_id = random.choice([movie.id for movie in Movie.query.all()])
         response = self.client().patch('/movies/{}'.format(random_id),
                                        headers={
-            "Authorization": "Bearer {}".format(self.executive_producer)
+            "Authorization": "Bearer {}".format(self.casting_director)
         },
             json={
             "title": "Joker",
@@ -187,12 +178,11 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['status_message'], 'OK')
 
-    
-    def test_patch_movies_by_executive_producer_404(self):
+    def test_patch_movies_by_casting_director_404(self):
         id = 999
         response = self.client().patch('/movies/{}'.format(id),
                                        headers={
-            "Authorization": "Bearer {}".format(self.executive_producer)
+            "Authorization": "Bearer {}".format(self.casting_director)
         },
             json={
             "title": "Joker",
@@ -204,9 +194,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(data['status_message'], "resource Not found")
 
-
     def test_delete_actors_by_executive_producer_200(self):
-        random_id = random.choice([ actor.id for actor in Actor.query.all()])
+        random_id = random.choice([actor.id for actor in Actor.query.all()])
         response = self.client().delete('actors/{}'.format(random_id),
                                         headers={
                                             "Authorization": "Bearer {}".format(self.executive_producer)
