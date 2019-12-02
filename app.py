@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from auth import AuthError, requires_auth
 from models import db, setup_db, Actor, Movie, movies
-from flask_migrate import Migrate
+
 
 
 def create_app(test_config=None):
@@ -12,7 +12,7 @@ def create_app(test_config=None):
     app = Flask(__name__)
     CORS(app)
     setup_db(app)
-    migrate = Migrate(app, db)
+    
 
     @app.route('/actors')
     @requires_auth('view:actors')
