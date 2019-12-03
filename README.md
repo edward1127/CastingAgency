@@ -1,5 +1,14 @@
 # Full Stack Casting Agency API Backend
 
+## Casting Agency Specifications
+
+The Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies. You are an Executive Producer within the company and are creating a system to simplify and streamline your process. 
+
+## Motivation for project
+
+This is the capstone project of Udacity fullstack nanodegree program, which demonstrate the skillset of
+using Flask, SQLAlchemy, Auth0, gunicorn and heroku to develop and deploy a RESTful API. 
+
 ## Getting Started
 
 ### Installing Dependencies
@@ -86,7 +95,25 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
     - Sign into each account and make note of the JWT.
     - Test each endpoint and correct any errors.
 
-## Demo Page  https://casting-agency-fullstack.herokuapp.com/
+## Demo Page  
+
+https://casting-agency-fullstack.herokuapp.com/
+
+Test each endpoint with the link above ,and different role's Jwts. 
+JWTs for different role can be accessed by login to the link with username and password provided as follows.
+https://cheermoon.auth0.com/authorize?audience=castingagency&response_type=token&client_id=0AclWPWFwUn1rZ0uq22UKyol5CV01GSN&redirect_uri=http://localhost:8100/ 
+
+```
+- Casting Assistant
+    - UserName: casting_assistant@test.com
+    - Password: Udacity!@# 
+- Casting Director
+    - UserName: casting_director@test.com
+    - Password: Udacity!@# 
+- Executive Producer
+    - UserName: executive_producer@test.com
+    - Password: Udacity!@# 
+```
 
 ## Endpoints documentation
 

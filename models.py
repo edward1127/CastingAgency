@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 
-DATABASE_URI = os.getenv('DATABASE_URL')
+DATABASE_URI = os.getenv('DATABASE_URI')
 db = SQLAlchemy()
 
 
@@ -12,12 +12,9 @@ def setup_db(app, database_path=DATABASE_URI):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    
-   
 
 
 # Helper table
-
 movies = db.Table('movies', db.Column('actor_id', db.Integer, db.ForeignKey('actor.id'), primary_key=True),
                   db.Column('movie_id', db.Integer, db.ForeignKey('movie.id'), primary_key=True))
 

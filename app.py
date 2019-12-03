@@ -6,13 +6,16 @@ from auth import AuthError, requires_auth
 from models import db, setup_db, Actor, Movie, movies
 
 
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
     CORS(app)
     setup_db(app)
-    
+
+    @app.route('/')
+    def index():
+        return "This is the demo page of Casting Agency." \
+            "Feel free to try each endpoint with different roles."
 
     @app.route('/actors')
     @requires_auth('view:actors')
