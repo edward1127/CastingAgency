@@ -15,7 +15,7 @@ def create_app(test_config=None):
     @app.route('/')
     def index():
         return "This is the demo page of Casting Agency." \
-            "Feel free to try each endpoint with different roles."
+            " Feel free to try each endpoint with different roles."
 
     @app.route('/actors')
     @requires_auth('view:actors')

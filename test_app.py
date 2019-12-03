@@ -27,6 +27,10 @@ class CastingAgencyTestCase(unittest.TestCase):
             self.db = SQLAlchemy()
             self.db.init_app(self.app)
 
+    '''
+    RBAC TEST
+    '''
+
     def test_post_actors_by_executive_producer_with_auth_200(self):
         response = self.client().post('/actors',
                                       headers={
@@ -142,11 +146,11 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['status_message'], 'OK')
 
-    def test_patch_actors_by_casting_director_with_auth_404(self):
-        id = 999
-        response = self.client().patch('/actors/{}'.format(id),
+    def test_patch_actors_by_casting_assistant_without_auth_401(self):
+        random_id = random.choice([actor.id for actor in Actor.query.all()])
+        response = self.client().patch('/actors/{}'.format(random_id),
                                        headers={
-            "Authorization": "Bearer {}".format(self.casting_director)
+            "Authorization": "Bearer {}".format(self.casting_assistant)
         },
             json={
             "name": "David",
@@ -155,9 +159,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         })
 
         data = json.loads(response.data)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(data['status_message'], "resource Not found")
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(data['code'], 'unauthorized')
 
     def test_patch_movies_by_casting_director_with_auth_200(self):
         random_id = random.choice([movie.id for movie in Movie.query.all()])
@@ -175,11 +178,11 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['status_message'], 'OK')
 
-    def test_patch_movies_by_casting_director_with_auth_404(self):
-        id = 999
-        response = self.client().patch('/movies/{}'.format(id),
+    def test_patch_movies_by_casting_assistant_without_auth_401(self):
+        random_id = random.choice([movie.id for movie in Movie.query.all()])
+        response = self.client().patch('/movies/{}'.format(random_id),
                                        headers={
-            "Authorization": "Bearer {}".format(self.casting_director)
+            "Authorization": "Bearer {}".format(self.casting_assistant)
         },
             json={
             "title": "Joker",
@@ -187,9 +190,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         })
 
         data = json.loads(response.data)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(data['status_message'], "resource Not found")
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(data['code'], 'unauthorized')
 
     def test_delete_actors_by_executive_producer_with_auth_200(self):
         random_id = random.choice([actor.id for actor in Actor.query.all()])
@@ -204,18 +206,17 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['status_message'], 'OK')
 
-    def test_delete_actors_by_executive_producer_with_auth_404(self):
-        id = 999
-        response = self.client().delete('actors/{}'.format(id),
+    def test_delete_actors_by_casting_assistant_without_auth_401(self):
+        random_id = random.choice([actor.id for actor in Actor.query.all()])
+        response = self.client().delete('actors/{}'.format(random_id),
                                         headers={
-                                            "Authorization": "Bearer {}".format(self.executive_producer)
+                                            "Authorization": "Bearer {}".format(self.casting_assistant)
         }
         )
         data = json.loads(response.data)
 
-        self.assertEqual(data['success'], False)
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(data['status_message'], "resource Not found")
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(data['code'], 'unauthorized')
 
     def test_delete_movies_by_executive_producer_with_auth_200(self):
         random_id = random.choice([movie.id for movie in Movie.query.all()])
@@ -230,18 +231,17 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['status_message'], 'OK')
 
-    def test_delete_movies_by_executive_producer_with_auth_404(self):
-        id = 999
-        response = self.client().delete('movies/{}'.format(id),
+    def test_delete_movies_by_casting_assistant_without_auth_401(self):
+        random_id = random.choice([movie.id for movie in Movie.query.all()])
+        response = self.client().delete('movies/{}'.format(random_id),
                                         headers={
-                                            "Authorization": "Bearer {}".format(self.executive_producer)
+                                            "Authorization": "Bearer {}".format(self.casting_assistant)
         }
         )
         data = json.loads(response.data)
 
-        self.assertEqual(data['success'], False)
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(data['status_message'], "resource Not found")
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(data['code'], 'unauthorized')
 
 
 if __name__ == '__main__':
