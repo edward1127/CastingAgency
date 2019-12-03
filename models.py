@@ -15,8 +15,15 @@ def setup_db(app, database_path=DATABASE_URI):
 
 
 # Helper table
-movies = db.Table('movies', db.Column('actor_id', db.Integer, db.ForeignKey('actor.id'), primary_key=True),
-                  db.Column('movie_id', db.Integer, db.ForeignKey('movie.id'), primary_key=True))
+movies = db.Table('movies',
+                  db.Column('actor_id',
+                            db.Integer,
+                            db.ForeignKey('actor.id'),
+                            primary_key=True),
+                  db.Column('movie_id',
+                            db.Integer,
+                            db.ForeignKey('movie.id'),
+                            primary_key=True))
 
 # Actor
 
